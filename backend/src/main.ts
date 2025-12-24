@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ConfigService } from './common/config';
 
@@ -8,6 +9,15 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule);
 
     const configService = app.get(ConfigService);
+
+    // Enable validation pipes
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        forbidNonWhitelisted: true,
+        transform: true,
+      }),
+    );
 
     app.setGlobalPrefix(configService.globalPrefix);
 
@@ -24,6 +34,7 @@ async function bootstrap() {
           'This API allows users to browse resorts in Thailand and create their favorite shortlists.',
       )
       .setVersion('1.0')
+      .addBearerAuth()
       .build();
 
     const document = SwaggerModule.createDocument(app, config);
