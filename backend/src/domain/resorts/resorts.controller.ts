@@ -1,10 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { ResortsService } from './resorts.service';
 import { Resort } from '../entities/resort.entity';
+import { CurrentUser, JwtAuthGuard } from '../auth';
+import { User } from '../entities';
 
 @ApiTags('resorts')
 @Controller('resorts')
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 export class ResortsController {
   constructor(private readonly resortsService: ResortsService) {}
 
@@ -15,7 +24,7 @@ export class ResortsController {
     description: 'Returns all resorts',
     type: [Resort],
   })
-  async findAll(): Promise<Resort[]> {
-    return this.resortsService.findAll();
+  async findAll(@CurrentUser() user: User): Promise<Resort[]> {
+    return this.resortsService.findAll(user);
   }
 }
