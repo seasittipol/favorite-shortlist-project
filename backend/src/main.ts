@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ConfigService } from './common/config';
+import { HttpExceptionFilter } from './common/filters';
 
 async function bootstrap() {
   try {
@@ -10,7 +11,8 @@ async function bootstrap() {
 
     const configService = app.get(ConfigService);
 
-    // Enable validation pipes
+    app.useGlobalFilters(new HttpExceptionFilter());
+
     app.useGlobalPipes(
       new ValidationPipe({
         whitelist: true,

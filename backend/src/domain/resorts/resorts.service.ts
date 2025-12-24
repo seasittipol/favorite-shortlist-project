@@ -5,6 +5,11 @@ import { Resort } from '../entities/resort.entity';
 import { User } from '../entities';
 import { FavoritesService } from '../favorites/favorites.service';
 import { ResortWithFavoriteResponse } from './dto/resort-with-favorite.response';
+import {
+  generatePaginationMeta,
+  getPaginationParams,
+} from 'src/common/utils/pagination';
+import { PaginationMeta } from 'src/common/types/pagination';
 
 @Injectable()
 export class ResortsService {
@@ -14,11 +19,19 @@ export class ResortsService {
     private readonly favoritesService: FavoritesService,
   ) {}
 
-  async findAll(user: User): Promise<ResortWithFavoriteResponse[]> {
-    const resorts = await this.resortsRepository.find({
+  async findAll(
+    user: User,
+    page?: number,
+    pageSize?: number,
+  ): Promise<{ data: ResortWithFavoriteResponse[]; meta: PaginationMeta }> {
+    const { skip, take } = getPaginationParams(page, pageSize);
+
+    const [resorts, totalCount] = await this.resortsRepository.findAndCount({
       order: {
         id: 'ASC',
       },
+      skip,
+      take,
     });
 
     const favoriteResortIds = await this.favoritesService.findByUserId(user.id);
@@ -26,9 +39,14 @@ export class ResortsService {
       favoriteResortIds.map((fav) => fav.resortId),
     );
 
-    return resorts.map((resort) => ({
-      ...resort,
-      isFavorite: favoriteIdsSet.has(resort.id),
-    }));
+    const paginationMeta = generatePaginationMeta(totalCount, page, pageSize);
+
+    return {
+      data: resorts.map((resort) => ({
+        ...resort,
+        isFavorite: favoriteIdsSet.has(resort.id),
+      })),
+      meta: paginationMeta,
+    };
   }
 }
