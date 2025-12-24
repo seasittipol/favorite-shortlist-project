@@ -1,0 +1,9 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "insertFinalNewline": true,
+  "bracketSameLine": false,
+  "printWidth": 80,
+  "proseWrap": "always"
+}
