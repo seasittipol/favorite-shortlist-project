@@ -16,7 +16,6 @@ export class FavoritesService {
   ) {}
 
   async create(createFavoriteDto: CreateFavoriteDto): Promise<Favorite> {
-    // Check if favorite already exists
     const existingFavorite = await this.favoritesRepository.findOne({
       where: {
         userId: createFavoriteDto.userId,
@@ -32,13 +31,13 @@ export class FavoritesService {
     return this.favoritesRepository.save(favorite);
   }
 
-  async remove(id: number): Promise<void> {
+  async remove(userId: number, resortId: number): Promise<void> {
     const favorite = await this.favoritesRepository.findOne({
-      where: { id },
+      where: { userId, resortId },
     });
 
     if (!favorite) {
-      throw new NotFoundException(`Favorite with ID ${id} not found`);
+      throw new NotFoundException(`Favorite with ID ${resortId} not found`);
     }
 
     await this.favoritesRepository.remove(favorite);

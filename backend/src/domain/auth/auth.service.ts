@@ -24,7 +24,7 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    const payload = { email: user.email, userId: user.id };
+    const payload = { email: user.email, id: user.id };
     const accessToken = await this.jwtService.signAsync(payload);
 
     return {

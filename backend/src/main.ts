@@ -35,7 +35,6 @@ async function bootstrap() {
         'API for managing users, resorts, and favorite resort lists. ' +
           'This API allows users to browse resorts in Thailand and create their favorite shortlists.',
       )
-      .setVersion('1.0')
       .addBearerAuth()
       .build();
 

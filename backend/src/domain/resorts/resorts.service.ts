@@ -34,17 +34,15 @@ export class ResortsService {
       take,
     });
 
-    const favoriteResortIds = await this.favoritesService.findByUserId(user.id);
-    const favoriteIdsSet = new Set(
-      favoriteResortIds.map((fav) => fav.resortId),
-    );
+    const favoritesByUserId = await this.favoritesService.findByUserId(user.id);
+    const ResortIdsSet = new Set(favoritesByUserId.map((fav) => fav.resortId));
 
     const paginationMeta = generatePaginationMeta(totalCount, page, pageSize);
 
     return {
       data: resorts.map((resort) => ({
         ...resort,
-        isFavorite: favoriteIdsSet.has(resort.id),
+        isFavorite: ResortIdsSet.has(resort.id),
       })),
       meta: paginationMeta,
     };

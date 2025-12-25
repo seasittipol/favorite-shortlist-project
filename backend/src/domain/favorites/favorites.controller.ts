@@ -22,6 +22,8 @@ import { FavoritesService } from './favorites.service';
 import { CreateFavoriteDto } from './dto/create-favorite.dto';
 import { Favorite } from '../entities/favorite.entity';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth';
+import { User } from '../entities';
 
 @ApiTags('favorites')
 @Controller('favorites')
@@ -43,14 +45,16 @@ export class FavoritesController {
     description: 'Resort is already in favorites',
   })
   async create(
+    @CurrentUser() user: User,
     @Body() createFavoriteDto: CreateFavoriteDto,
   ): Promise<Favorite> {
+    createFavoriteDto.userId = user.id;
     return this.favoritesService.create(createFavoriteDto);
   }
 
-  @Delete(':id')
+  @Delete(':resortId')
   @ApiOperation({ summary: 'Remove a favorite by ID' })
-  @ApiParam({ name: 'id', description: 'Favorite ID', type: Number })
+  @ApiParam({ name: 'resortId', description: 'Resort ID', type: Number })
   @ApiResponse({
     status: 204,
     description: 'Favorite deleted successfully',
@@ -60,8 +64,17 @@ export class FavoritesController {
     description: 'Favorite not found',
   })
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
-    return this.favoritesService.remove(id);
+  async remove(
+    @CurrentUser() user: User,
+    @Param('resortId') resortId: number,
+  ): Promise<void> {
+    console.log(
+      'Removing favorite for resortId:',
+      resortId,
+      'and userId:',
+      user.id,
+    );
+    return this.favoritesService.remove(user.id, resortId);
   }
 
   @Get()

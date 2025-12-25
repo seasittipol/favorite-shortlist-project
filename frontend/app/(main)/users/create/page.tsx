@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { apiClient } from "@/lib/api-client";
-import type { CreateUserDto } from "@/types/user";
+import { apiClient } from "@/services/api-client";
+import { authApi } from "@/services/auth-api";
+import type { CreateUserDto, User } from "@/types/user";
+import { Header } from "@/components";
 
 export default function CreateUserPage() {
   const router = useRouter();
+  const [currentUser] = useState<User | null>(() => authApi.getCurrentUser());
   const [formData, setFormData] = useState<CreateUserDto>({
     name: "",
     email: "",
@@ -15,6 +18,12 @@ export default function CreateUserPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!currentUser) {
+      router.push("/auth/login");
+    }
+  }, [currentUser, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +47,9 @@ export default function CreateUserPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
+      <Header user={currentUser} currentPage="users" />
+
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           {/* Header */}

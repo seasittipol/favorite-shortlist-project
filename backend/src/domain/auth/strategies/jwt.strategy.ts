@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 
 export interface JwtPayload {
   email: string;
-  userId: number;
+  id: number;
 }
 
 @Injectable()
@@ -22,6 +22,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!payload.email) {
       throw new UnauthorizedException('Invalid token');
     }
-    return { userId: payload.userId, email: payload.email };
+    return { id: payload.id, email: payload.email };
   }
 }

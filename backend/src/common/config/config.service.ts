@@ -117,7 +117,7 @@ export class ConfigService {
 
   get globalPrefix(): string {
     const api = this.api;
-    return `${api.prefix}/${api.version}`;
+    return `${api.prefix}`;
   }
 
   // Upload Configuration
