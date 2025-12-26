@@ -68,12 +68,6 @@ export class FavoritesController {
     @CurrentUser() user: User,
     @Param('resortId') resortId: number,
   ): Promise<void> {
-    console.log(
-      'Removing favorite for resortId:',
-      resortId,
-      'and userId:',
-      user.id,
-    );
     return this.favoritesService.remove(user.id, resortId);
   }
 
