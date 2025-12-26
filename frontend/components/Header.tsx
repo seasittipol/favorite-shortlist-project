@@ -10,8 +10,8 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const currentPage = pathname.replace("/", "");
-  const user = null; // TODO: Get user from auth context or props
-
+  const user = authApi.getCurrentUser();
+  console.log("Current user in Header:", user);
   const handleLogout = () => {
     authApi.logout();
     router.push("/auth/login");
@@ -48,14 +48,11 @@ export default function Header() {
             {user && (
               <div className="text-right hidden sm:flex items-center gap-2">
                 <UserIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-                {/* <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <div>
+                  <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                     {user}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {user}
-                  </p>
-                </div> */}
+                </div>
               </div>
             )}
             <button

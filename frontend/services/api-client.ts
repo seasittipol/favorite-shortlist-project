@@ -29,7 +29,7 @@ export const authStorage = {
       localStorage.setItem(USER_KEY, JSON.stringify(email));
     }
   },
-  getUser: (): User | null => {
+  getUser: (): string | null => {
     if (typeof window !== "undefined") {
       const user = localStorage.getItem(USER_KEY);
       return user ? JSON.parse(user) : null;
