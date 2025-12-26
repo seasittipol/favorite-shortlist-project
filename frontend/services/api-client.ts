@@ -72,7 +72,10 @@ export const apiClient = {
     if (!response.ok) {
       if (response.status === 401) {
         authStorage.clear();
-        if (typeof window !== "undefined") {
+        if (
+          typeof window !== "undefined" &&
+          window.location.pathname !== "/auth/login"
+        ) {
           window.location.href = "/auth/login";
         }
       }
@@ -92,7 +95,10 @@ export const apiClient = {
     if (!response.ok) {
       if (response.status === 401) {
         authStorage.clear();
-        if (typeof window !== "undefined") {
+        if (
+          typeof window !== "undefined" &&
+          window.location.pathname !== "/auth/login"
+        ) {
           window.location.href = "/auth/login";
         }
       }
@@ -112,7 +118,10 @@ export const apiClient = {
     if (!response.ok) {
       if (response.status === 401) {
         authStorage.clear();
-        if (typeof window !== "undefined") {
+        if (
+          typeof window !== "undefined" &&
+          window.location.pathname !== "/auth/login"
+        ) {
           window.location.href = "/auth/login";
         }
       }
@@ -131,7 +140,10 @@ export const apiClient = {
     if (!response.ok) {
       if (response.status === 401) {
         authStorage.clear();
-        if (typeof window !== "undefined") {
+        if (
+          typeof window !== "undefined" &&
+          window.location.pathname !== "/auth/login"
+        ) {
           window.location.href = "/auth/login";
         }
       }

@@ -1,33 +1,35 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/services/auth-api";
+import { toast } from "@/components";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const accessToken = authApi.isAuthenticated();
 
-  if (accessToken) {
-    router.push("/resorts");
-  }
+  useEffect(() => {
+    if (accessToken) {
+      router.push("/resorts");
+    }
+  }, [accessToken, router]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
 
     try {
       await authApi.login({ email });
       router.push("/resorts");
+      toast.success("Logged in successfully!");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
-      setLoading(false);
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Failed to log in. Please try again."
+      );
     }
   };
 
@@ -62,18 +64,11 @@ export default function LoginPage() {
             />
           </div>
 
-          {error && (
-            <div className="p-3 bg-red-100 dark:bg-red-900 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-200 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
-
           <button
             type="submit"
-            disabled={loading}
             className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            Sign In
           </button>
         </form>
 
