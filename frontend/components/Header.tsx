@@ -10,8 +10,8 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const currentPage = pathname.replace("/", "");
-  const user = authApi.getCurrentUser();
-  console.log("Current user in Header:", user);
+  const user = authApi.getCurrentUser() as unknown as string;
+
   const handleLogout = () => {
     authApi.logout();
     router.push("/auth/login");
