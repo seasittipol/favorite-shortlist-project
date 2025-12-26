@@ -8,6 +8,7 @@ describe('UserService', () => {
   let userRepository: {
     find: jest.Mock;
     save: jest.Mock;
+    findOne: jest.Mock;
   };
 
   const mockUsers: User[] = [
@@ -33,6 +34,7 @@ describe('UserService', () => {
     userRepository = {
       find: jest.fn(),
       save: jest.fn(),
+      findOne: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -79,6 +81,7 @@ describe('UserService', () => {
         password: 'password123',
       };
       const savedUser = { ...createUserDto, id: 3 };
+      userRepository.findOne.mockResolvedValue(undefined);
       userRepository.save.mockResolvedValue(savedUser);
 
       const result = await service.create(createUserDto);
@@ -93,6 +96,7 @@ describe('UserService', () => {
         name: 'Existing User',
         password: 'password123',
       };
+      userRepository.findOne.mockResolvedValue(undefined);
       userRepository.save.mockRejectedValue(new Error('Duplicate email'));
 
       await expect(service.create(createUserDto)).rejects.toThrow(
