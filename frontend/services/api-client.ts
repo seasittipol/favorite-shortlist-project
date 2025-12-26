@@ -1,7 +1,7 @@
 import { User } from "@/types/user";
 
 // API configuration
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
 // Token management
 const TOKEN_KEY = "auth_token";
