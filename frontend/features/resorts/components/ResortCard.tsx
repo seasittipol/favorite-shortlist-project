@@ -1,5 +1,6 @@
 import { ResortWithFavorite } from "@/types/resort";
 import { Heart, MapPin, Star, Bed, DoorOpen, Leaf } from "lucide-react";
+import Image from "next/image";
 
 interface ResortCardProps {
   resort: ResortWithFavorite;
@@ -16,7 +17,7 @@ export default function ResortCard({
       className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
     >
       <div className="p-6 min-h-48">
-        <div className="flex items-start justify-between mb-3">
+        <div className="flex items-start justify-between mb-3 min-h-14">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex-1 line-clamp-2">
             {resort.name}
           </h3>
@@ -37,6 +38,14 @@ export default function ResortCard({
             />
           </button>
         </div>
+
+        <Image
+          src="/istockphoto-1040315976-1024x1024.jpg"
+          width={500}
+          height={500}
+          alt={resort.name || "Resort image"}
+          className="rounded-lg mb-4 object-cover w-full h-64"
+        />
 
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 shrink-0" />
