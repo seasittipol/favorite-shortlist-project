@@ -11,14 +11,10 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
   async findAll() {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     return await this.userRepository.find();
   }
 
   async create(user: CreateUserDto) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     return await this.userRepository.save(user);
   }
 }
